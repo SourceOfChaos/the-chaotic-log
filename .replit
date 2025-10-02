@@ -1,0 +1,26 @@
+[env]
+# Environment variables, optional
+
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
+
+[[ports]]
+localPort = 1313
+externalPort = 80
+
+[run]
+command = "bash start_hugo.sh"
+
+[workflows]
+
+[[workflows.workflow]]
+name = "start"
+mode = "sequential"
+author = 46076551
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash start_hugo.sh"

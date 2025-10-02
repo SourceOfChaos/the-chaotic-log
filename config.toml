@@ -1,0 +1,38 @@
+baseURL = "https://the-chaotic-log.netlify.app/"
+languageCode = "de-de"
+title = "The Chaotic Log"
+theme = "ananke"
+
+# Grundlegende Metadaten
+author = "Chaos"
+paginate = 10
+enableRobotsTXT = true
+
+# Menüs
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Startseite"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "posts"
+    name = "Beiträge"
+    url = "/posts/"
+    weight = 2
+
+# Social Links (optional)
+[params]
+  subtitle = "Gedanken, Experimente & Debug-Sessions"
+  description = "Ein wilder Mix aus Ideen, Technik und Chaos."
+  github = "https://github.com/SourceOfChaos"
+  rss = true
+  showReadingTime = true
+  dateFormat = "02.01.2006"
+
+# Syntax Highlighting für Codeblöcke
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    lineNumbers = true
