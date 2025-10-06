@@ -1,8 +1,8 @@
-{{- define "rss" -}}
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:content="http://purl.org/rss/1.0/modules/content/"
-  xmlns:atom="http://www.w3.org/2005/Atom">
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom">
 
   <channel>
     <title>{{ .Site.Title }}</title>
@@ -14,23 +14,22 @@
     <atom:link href="{{ .Site.BaseURL }}index.xml" rel="self" type="application/rss+xml"/>
 
     {{ range first 20 (where .Site.RegularPages "Type" "in" site.Params.mainSections).ByDate.Reverse }}
-      <item>
-        <title>{{ .Title }}</title>
-        <link>{{ .Permalink }}</link>
-        <guid>{{ .Permalink }}</guid>
-        <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 MST" }}</pubDate>
-        <description><![CDATA[
-          {{ if .Params.summary }}
-            {{ .Params.summary }}
-          {{ else if .Summary }}
-            {{ .Summary }}
-          {{ else }}
-            {{ .Content | truncate 200 }}
-          {{ end }}
-        ]]></description>
-      </item>
+    <item>
+      <title>{{ .Title | html }}</title>
+      <link>{{ .Permalink }}</link>
+      <guid>{{ .Permalink }}</guid>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 MST" }}</pubDate>
+      <description><![CDATA[
+        {{ if .Params.summary }}
+          {{ .Params.summary | safeHTML }}
+        {{ else if .Summary }}
+          {{ .Summary | safeHTML }}
+        {{ else }}
+          {{ .Content | plainify | truncate 200 | safeHTML }}
+        {{ end }}
+      ]]></description>
+    </item>
     {{ end }}
 
   </channel>
 </rss>
-{{- end -}}
