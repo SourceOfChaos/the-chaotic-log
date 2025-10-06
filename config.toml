@@ -19,6 +19,13 @@ enableRobotsTXT = true
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
 
+# --- Sitemap ---
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+# --- Parameter & Metadaten ---
 [params]
   subtitle = "Gedanken, Experimente & Debug-Sessions"
   description = "Ein wilder Mix aus Ideen, Technik und Chaos."
@@ -54,18 +61,18 @@ enableRobotsTXT = true
     style = "monokai"
     lineNumbers = true
 
-# --- Optionale Google Search Console Verification ---
+# --- Optional: Google Search Console Verifikation ---
 # Wenn du dein Blog bei Google verifizieren willst:
 # 1. Gehe zu https://search.google.com/search-console
-# 2. Wähle "HTML-Tag" als Methode.
-# 3. Trage den Meta-Code hier ein, z. B.:
+# 2. Wähle „HTML-Tag“ als Methode.
+# 3. Trage den Code unten ein, z. B.:
 #
 # [params.google]
 #   verification = "google1234567890abcdef"
 #
-# Dann in layouts/partials/head.html hinzufügen:
+# 4. Ergänze in layouts/partials/head.html:
 # {{ with .Site.Params.google.verification }}
 #   <meta name="google-site-verification" content="{{ . }}">
 # {{ end }}
 #
-# → Fertig! Google erkennt dein Blog automatisch.
+# Danach einmal neu deployen – Google erkennt dein Blog automatisch.
