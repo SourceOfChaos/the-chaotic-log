@@ -18,6 +18,7 @@ enableRobotsTXT = true
   home = ["HTML", "RSS", "JSON"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
 
 # --- Sitemap ---
 [sitemap]
@@ -31,6 +32,7 @@ enableRobotsTXT = true
   description = "Ein wilder Mix aus Ideen, Technik und Chaos."
   keywords = ["Blog", "Technik", "KI", "Programmierung", "Gedanken", "Chaos"]
   github = "https://github.com/SourceOfChaos"
+
   rss = true
   showReadingTime = true
   dateFormat = "02.01.2006"
@@ -40,6 +42,11 @@ enableRobotsTXT = true
   ogTitle = "The Chaotic Log"
   ogDescription = "Ein wilder Mix aus Ideen, Technik und Chaos."
   twitterCard = "summary_large_image"
+
+  # --- OG & Meta Defaults ---
+  author = "Chaos"
+  locale = "de_DE"
+  site_name = "The Chaotic Log"
 
 # --- Menü ---
 [menu]
