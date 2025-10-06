@@ -1,14 +1,40 @@
+# ===============================
+#  The Chaotic Log – Hugo Config
+#  Theme: Ananke
+#  Plattform: Netlify
+# ===============================
+
 baseURL = "https://the-chaotic-log.netlify.app/"
 languageCode = "de-de"
 title = "The Chaotic Log"
 theme = "ananke"
 
-# Grundlegende Metadaten
 author = "Chaos"
 paginate = 10
 enableRobotsTXT = true
 
-# Menüs
+# --- SEO & OUTPUT CONFIG ---
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+
+[params]
+  subtitle = "Gedanken, Experimente & Debug-Sessions"
+  description = "Ein wilder Mix aus Ideen, Technik und Chaos."
+  keywords = ["Blog", "Technik", "KI", "Programmierung", "Gedanken", "Chaos"]
+  github = "https://github.com/SourceOfChaos"
+  rss = true
+  showReadingTime = true
+  dateFormat = "02.01.2006"
+
+  # --- Social Media Preview ---
+  images = ["images/default-social.jpg"]
+  ogTitle = "The Chaotic Log"
+  ogDescription = "Ein wilder Mix aus Ideen, Technik und Chaos."
+  twitterCard = "summary_large_image"
+
+# --- Menü ---
 [menu]
   [[menu.main]]
     identifier = "home"
@@ -22,17 +48,24 @@ enableRobotsTXT = true
     url = "/posts/"
     weight = 2
 
-# Social Links (optional)
-[params]
-  subtitle = "Gedanken, Experimente & Debug-Sessions"
-  description = "Ein wilder Mix aus Ideen, Technik und Chaos."
-  github = "https://github.com/SourceOfChaos"
-  rss = true
-  showReadingTime = true
-  dateFormat = "02.01.2006"
-
-# Syntax Highlighting für Codeblöcke
+# --- Code Highlighting ---
 [markup]
   [markup.highlight]
     style = "monokai"
     lineNumbers = true
+
+# --- Optionale Google Search Console Verification ---
+# Wenn du dein Blog bei Google verifizieren willst:
+# 1. Gehe zu https://search.google.com/search-console
+# 2. Wähle "HTML-Tag" als Methode.
+# 3. Trage den Meta-Code hier ein, z. B.:
+#
+# [params.google]
+#   verification = "google1234567890abcdef"
+#
+# Dann in layouts/partials/head.html hinzufügen:
+# {{ with .Site.Params.google.verification }}
+#   <meta name="google-site-verification" content="{{ . }}">
+# {{ end }}
+#
+# → Fertig! Google erkennt dein Blog automatisch.

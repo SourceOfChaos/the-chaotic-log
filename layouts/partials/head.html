@@ -1,0 +1,55 @@
+<!-- ===============================
+     The Chaotic Log – Head Partial
+     Theme: Ananke (extended)
+     Platform: Hugo + Netlify
+     =============================== -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="keywords" content="{{ delimit .Site.Params.keywords ", " }}">
+
+  {{ if .IsPage }}
+    <meta property="og:type" content="article">
+  {{ else }}
+    <meta property="og:type" content="website">
+  {{ end }}
+  <meta property="og:title" content="{{ .Title | default .Site.Params.ogTitle }}">
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.ogDescription }}{{ end }}">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:image" content="{{ (resources.Get .Site.Params.images 0 | default "images/default-social.jpg") | absURL }}">
+
+  <meta name="twitter:card" content="{{ .Site.Params.twitterCard | default "summary_large_image" }}">
+  <meta name="twitter:title" content="{{ .Title | default .Site.Params.ogTitle }}">
+  <meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.ogDescription }}{{ end }}">
+  <meta name="twitter:image" content="{{ (resources.Get .Site.Params.images 0 | default "images/default-social.jpg") | absURL }}">
+
+  {{ with .Site.Params.google.verification }}
+    <meta name="google-site-verification" content="{{ . }}">
+  {{ end }}
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ .Permalink }}">
+
+  <!-- RSS & Sitemap -->
+  <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ .Site.BaseURL }}index.xml">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml">
+
+  <!-- Favicon -->
+  <link rel="icon" href="{{ "favicon.ico" | absURL }}">
+
+  <!-- Styles (vom Theme) -->
+  {{- partial "css.html" . -}}
+
+  <!-- Hugo Generator Meta -->
+  {{ hugo.Generator }}
+
+  <!-- Optional: Custom Analytics oder Scripts -->
+  {{ if .Site.Params.customHead }}
+    {{ .Site.Params.customHead | safeHTML }}
+  {{ end }}
+</head>
