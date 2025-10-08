@@ -1,44 +1,39 @@
-{{/* 
-# Patch – Datei: layouts/_default/rss.xml
+# Patch #RSS-016 – Datei: layouts/_default/rss.xml
 # Typ: Update
-# Ursache: XML wurde HTML-escaped (Feed enthielt &lt;?xml ...)
-# Lösung: safeHTML + korrektes Outputformat + valides RSS-Template
-# Ergebnis: W3C-valider RSS-Feed (UTF-8, kein HTML-Escaping)
-*/}}
+# Ursache: Escaped CDATA, ungültige RFC-822 Zeit, keine Zeilenumbrüche
+# Lösung: safeHTML-Anwendung auf Gesamtausgabe, RFC-822 Zeitfix, Pretty-Format
 
-{{- printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" | safeHTML -}}
-<rss version="2.0"
-  :dc="http://purl.org/dc/elements/1.1/"
-  xmlns:content="http://purl.org/rss/1.0/modules/content/"
-  xmlns:atom="http://www.w3.org/2005/Atom">
+{{- $rss := printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" -}}
+{{- $rss = printf "%s<rss version=\"2.0\"\n  xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n  xmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n  xmlns:atom=\"http://www.w3.org/2005/Atom\">\n\n" $rss -}}
+{{- $rss = printf "%s  <channel>\n" $rss -}}
+{{- $rss = printf "%s    <title>%s</title>\n" $rss (.Site.Title | html) -}}
+{{- $rss = printf "%s    <link>%s</link>\n" $rss .Site.BaseURL -}}
+{{- $rss = printf "%s    <description>%s</description>\n" $rss (.Site.Params.description | html) -}}
+{{- $rss = printf "%s    <language>%s</language>\n" $rss (.Site.LanguageCode | default "de-de") -}}
+{{- $rss = printf "%s    <generator>Hugo %s</generator>\n" $rss hugo.Version -}}
+{{- $rss = printf "%s    <lastBuildDate>%s</lastBuildDate>\n" $rss (now.Format "Mon, 02 Jan 2006 15:04:05 -0700") -}}
+{{- $rss = printf "%s    <atom:link href=\"%sindex.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n\n" $rss .Site.BaseURL -}}
 
-  <channel>
-    <title>{{ .Site.Title }}</title>
-    <link>{{ .Site.BaseURL }}</link>
-    <description>{{ .Site.Params.description }}</description>
-    <language>{{ .Site.LanguageCode | default "de-de" }}</language>
-    <generator>Hugo {{ hugo.Version }}</generator>
-    <lastBuildDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 MST" }}</lastBuildDate>
-    <atom:link href="{{ .Site.BaseURL }}index.xml" rel="self" type="application/rss+xml"/>
+{{- $pages := where .Site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- range first 20 (sort $pages "Date" "desc") }}
+  {{- $rss = printf "%s    <item>\n" $rss -}}
+  {{- $rss = printf "%s      <title>%s</title>\n" $rss (.Title | htmlEscape) -}}
+  {{- $rss = printf "%s      <link>%s</link>\n" $rss .Permalink -}}
+  {{- $rss = printf "%s      <guid>%s</guid>\n" $rss .Permalink -}}
+  {{- $rss = printf "%s      <pubDate>%s</pubDate>\n" $rss (.Date.Format "Mon, 02 Jan 2006 15:04:05 -0700") -}}
 
-    {{- $pages := where .Site.RegularPages "Type" "in" site.Params.mainSections -}}
-    {{- range first 20 (sort $pages "Date" "desc") }}
-      <item>
-        <title>{{ .Title | htmlEscape }}</title>
-        <link>{{ .Permalink }}</link>
-        <guid>{{ .Permalink }}</guid>
-        <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 MST" }}</pubDate>
-        <description><![CDATA[
-{{ if .Params.summary -}}
-{{ .Params.summary }}
-{{ else if .Summary -}}
-{{ .Summary }}
-{{ else -}}
-{{ .Plain | truncate 300 }}
-{{ end -}}
-        ]]></description>
-      </item>
-    {{- end }}
+  {{- $desc := "" -}}
+  {{- if .Params.summary -}}
+    {{- $desc = .Params.summary -}}
+  {{- else if .Summary -}}
+    {{- $desc = .Summary -}}
+  {{- else -}}
+    {{- $desc = .Plain | truncate 300 -}}
+  {{- end -}}
 
-  </channel>
-</rss>
+  {{- $rss = printf "%s      <description><![CDATA[%s]]></description>\n" $rss $desc -}}
+  {{- $rss = printf "%s    </item>\n" $rss -}}
+{{- end }}
+
+{{- $rss = printf "%s  </channel>\n</rss>\n" $rss -}}
+{{- $rss | safeHTML -}}
