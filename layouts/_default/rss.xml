@@ -1,11 +1,7 @@
-# Patch #RSS-018 – Datei: layouts/_default/rss.xml
-# Typ: Patch
-# Ursache: Hugo rendert $rss intern als Text, bevor safeHTML greift → Namespace verliert Präfix „xmlns:“
-# Lösung: $rss am Ende in (safeHTML) casten, statt Pipe nach Output.
+{{- /* PATCH #RSS-019 – XML Header Escaping Fix */ -}}
 
+{{- $rss := "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" | safeHTML -}}
 
-
-{{- $rss := printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" -}}
 {{- $rss = printf "%s<rss version=\"2.0\"\n  xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n  xmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n  xmlns:atom=\"http://www.w3.org/2005/Atom\">\n\n" $rss -}}
 {{- $rss = printf "%s  <channel>\n" $rss -}}
 {{- $rss = printf "%s    <title>%s</title>\n" $rss (.Site.Title | html) -}}
