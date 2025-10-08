@@ -2,6 +2,8 @@
      The Chaotic Log – Head Partial
      Theme: Ananke (extended)
      Platform: Hugo + Netlify
+     Patch: #RSS-FEIN-02
+     Zweck: Erweiterte Feed- und Social-Meta-Integration
      =============================== -->
 
 <head>
@@ -38,6 +40,13 @@
   <!-- RSS & Sitemap -->
   <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ .Site.BaseURL }}index.xml">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml">
+
+  <!-- Erweiterte Feed Discovery (Social + SEO) -->
+  <meta property="og:see_also" content="{{ .Site.BaseURL }}index.xml">
+  <meta name="alternate:feed_url" content="{{ .Site.BaseURL }}index.xml">
+  <meta name="feed:source" content="{{ .Site.Title }}">
+  <meta name="feed:format" content="rss2">
+  <link rel="alternate" href="{{ .Site.BaseURL }}index.xml" type="application/rss+xml" title="{{ .Site.Title }} RSS Feed">
 
   <!-- Favicon -->
   <link rel="icon" href="{{ "favicon.ico" | absURL }}">

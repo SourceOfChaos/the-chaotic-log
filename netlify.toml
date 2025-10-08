@@ -12,6 +12,17 @@
 [context.production.environment]
   NODE_VERSION = "22"
 
+# --- RSS Caching aktivieren ---
+[[headers]]
+  for = "/index.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=300, stale-while-revalidate=600"
+
+[[headers]]
+  for = "/posts/*.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=300, stale-while-revalidate=600"
+
 # Optional: Redirects (falls du mal /index.html -> / haben willst)
 # [[redirects]]
 #   from = "/index.html"
